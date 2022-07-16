@@ -1,0 +1,81 @@
+body{
+    margin: 0;
+    font-family: sans-serif;
+    color: black;
+    font-size: 20px;
+    background-image: url('/static/paper.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 130%;
+}
+
+.content {
+    margin: 0 auto;
+    width: 50%;
+    background-color: rgba(194, 87, 0, 0.753);
+}
+
+.right_content {
+    float: right;
+    width: 23%;
+}
+
+.left_content {
+    float: left;
+    margin-left: 2%;
+    width: 15%;
+    text-align: left;
+}
+
+table, td, th {
+    border: 1px solid black;
+    background-color: cadetblue;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    height: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+#content {
+    width: 70%;
+}
+
+.Error{
+    font-size: 33px;
+    color: crimson;
+}
+
+.madlib{
+    height: 70%;
+    width: 70%;
+    display:block;
+    margin:auto;
+}
+
+.flag{
+    height: 100px;
+    width: 150px;
+}
+
+h2{
+    font-size: 28px;
+    color: gold;
+}
+
+h4{
+    font-size: 33px;
+    color: blue;
+}

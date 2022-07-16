@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Historical Mad Lib Guesser</title>
+{% endblock %}
+
+{% block body %}
+<div class="right_content">
+    {% if Hint %}
+        <p> Hint: </p>
+    {% endif %}
+    {% for item in Hint %}
+        <p>{{item}}</p>
+    {% endfor %}
+</div>
+<div class="left_content">
+    <p> Available Countries: </p>
+    <img src="{{ url_for('static', filename='ChinaFlag.png') }}" class="flag"/>
+    <p> China 1950 - 2021 </p>
+    <img src="{{ url_for('static', filename='JapanFlag.png') }}" class="flag"/>
+    <p> Japan 1960 - 2000 </p>
+    <img src="{{ url_for('static', filename='USFlag.png') }}" class="flag"/>
+    <p> United States 1900 - 2021 </p>
+</div>
+<div class="content">
+    <h1 style="text-align: center">Historical Mad Lib Guesser</h1>
+    <div class="form">
+        {% if Sentiment %}
+        <form action="/" method="POST">
+            <input type="submit" name="get_content" id="get_content" value="Go back to Main Menu">
+        </form>
+        <br/>
+        {% endif %}
+        {% if not Sentiment %}
+        <img src="{{ url_for('static', filename='mhist.png') }}" class="madlib"/>
+        <form action="/" method="POST">
+            <input type="submit" name="board_content" id="board_content" value="Go to Leader Board">
+        </form>
+        <br/>
+        <form action="/" method="POST">
+            {% if not Display_Guess %}
+            <label for="fname">Enter a Country (Required):</label><br>
+            <label for="fname">Please Enter one of these 3 Countries: (c)China (u)United States (j)Japan:</label><br>
+            <input type="text" name="country_content" id="country_content" value="United States">
+            <br>
+            <br>
+            <input type="submit" value="Get Events">
+        </form>
+        <form action="/" method="POST">
+            <br>
+            <label for="fname">Random Year and Random Country (China,United States,Japan) </label><br>
+            <input type="submit" name="random_content" id="random_content" value="Get Random Events">
+            {% endif %}
+        </form>
+        {% endif %}
+        {% if Sentiment %}
+        <h2> Current Year: {{Current_Year}} </h2>
+        <h2> Current Country: {{Current_Country}} </h2>
+            {% for item in Sentiment %}
+            <p> {{item}} </p>
+            {% endfor %}
+        <form action="/" method="POST">
+            <label for="fname">Enter a Number from -100 to 100 for a Guess on the Sentiment (Required):</label><br>
+            <input type="text" name="Sent_Guess" id="Sent_Guess" placeholder="Enter an Integer">
+            <br/>
+            <br/>
+            <label for="fname">Enter the Name that will be attached to the Guess:</label><br>
+            <input type="text" name="name_content" id="name_content" value="ANONYMOUS">
+            <br/>
+            <br/>
+            {% if GPE %}
+            <label for="fname">GPE Guess:</label><br>
+            <input type="text" name="GPE_content" id="GPE_content" placeholder="Enter countries, cities etc." style="width: 300px;">
+            <br/>
+            <br/>
+            {% endif %}
+            {% if PERSON %}
+            <label for="fname">PERSON Guess:</label><br>
+            <input type="text" name="PERSON_content" id="PERSON_content" placeholder="Enter a famous Historical person" style="width: 300px;">
+            <br/>
+            <br/>
+            {% endif %}
+            {% if EVENT %}
+            <label for="fname">EVENT Guess:</label><br>
+            <input type="text" name="EVENT_content" id="EVENT_content" placeholder="Enter an Event" style="width: 300px;">
+            <br/>
+            <br/>
+            {% endif %}
+            {% if ORG %}
+            <label for="fname">ORG Guess:</label><br>
+            <input type="text" name="ORG_content" id="ORG_content" placeholder="Enter an organization" style="width: 300px;">
+            <br/>
+            <br/>
+            {% endif %}
+            {% if LOC %}
+            <label for="fname">LOC Guess:</label><br>
+            <input type="text" name="LOC_content" id="LOC_content" placeholder="Enter Locations like mountain ranges, water bodies etc." style="width: 300px;">
+            <br/>
+            <br/>
+            {% endif %}
+            <input type="submit" value="Submit All">
+        </form>
+        {% endif %}
+    </div>
+</div>
+<div class="content">
+    {% if Display_Guess %}
+    <p> Your Score for this guess is {{Guess_Sentiment}}. <br> The Comptuer's Sentiment Score: {{Comp_Score}}. <br> Compared to your Sentiment Guess: {{Player_Guess}}. <br> {{Blank_Guess}} <br> Answers: </p>
+    <p>
+    {% for key, value in Answer.items() %}
+        {{key}} : {{value}} <br>
+    {% endfor %}
+    </p>    
+    {% endif %}
+    {% if Display_Error %}
+    <p class="Error"> (Error) {{Error_Type}} </p>
+    {% endif %}
+</div>
+{% endblock %}
