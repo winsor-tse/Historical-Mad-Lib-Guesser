@@ -67,7 +67,6 @@ def index():
                 #return render_template('index.html', Display_Error=True, Error_Type="That Year that is not an integer. Please input an integer.")
                 #if the country contene exist, we input Country
                 r_list = Sentiment_Analysis.random_cntry_yr(Country)
-                print(r_list)
                 year_content = r_list[0]
                 Country = r_list[1]
                 Sentiment_par=Sentiment_Analysis.year_api(year_content, Country)
@@ -79,7 +78,6 @@ def index():
                 if Sentiment_par:
                     sent_list.append(Sentiment_par)
                     sent_list.append(map_par[0])
-                    print(sent_list[1])
                     GPE_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"GPE")
                     PERSON_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"PERSON")
                     EVENT_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"EVENT")
@@ -98,7 +96,6 @@ def index():
             if Sentiment_par:
                 sent_list.append(Sentiment_par)
                 sent_list.append(map_par[0])
-                print(sent_list[1])
                 GPE_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"GPE")
                 PERSON_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"PERSON")
                 EVENT_exist = Sentiment_Analysis.Look_for_key(sent_list[1],"EVENT")
@@ -172,6 +169,23 @@ def delete(id):
     except:
         return 'There was a problem deleting that task'
 
+@app.route('/delete_last')
+def delete_last():
+    tasks = Todo.query.order_by(Todo.content.desc()).all()
+    for task in tasks:
+        today = datetime.today()
+        datem = datetime(today.year, today.month, today.day)
+        if task.date_created.date() < datem.date():
+            try:
+                task_to_delete = Todo.query.get_or_404(task.id)
+                db.session.delete(task_to_delete)
+                db.session.commit()
+            except:
+                return 'There was a problem deleting that task'
+        else:
+            return render_template('leaderboard.html', Nothing=True)
+    return redirect('/leaderboard')
+
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     task = Todo.query.get_or_404(id)
@@ -188,23 +202,10 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-#TODO: add a button to delete last 10
 @app.route('/leaderboard', methods=['POST','GET'])
-def board():
-    if request.form.get("go_back"):
-        print("hi")
-        import pdb; pdb.set_trace()
-        for task in tasks:
-            if task.date_created.date() != datetime.utcnow:
-                try:
-                    db.session.delete(task.id)
-                    db.session.commit()
-                except:
-                    return 'There was a problem deleting that task'
-        return redirect('/')
-    else:
-        tasks = Todo.query.order_by(Todo.content.desc()).all()
-        return render_template('leaderboard.html', tasks=tasks)
+def leaderboard():
+    tasks = Todo.query.order_by(Todo.content.desc()).all()
+    return render_template('leaderboard.html', tasks=tasks)
 
 if __name__ == "__main__":
     db.session.flush()

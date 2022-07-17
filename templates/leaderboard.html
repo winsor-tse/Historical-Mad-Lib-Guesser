@@ -35,5 +35,12 @@
         <br>
         <input type="submit" name="go_back" id="go_back" value="Go back to Main Menu">
     </form>
+    <br>
+    <form action="/delete_last">
+        <input type="submit" value="Delete Scores of previous days" />
+    </form>
+    {% if Nothing %}
+        <p> There is Nothing to Delete</p>
+    {% endif %}
 </div>
 {% endblock %}
